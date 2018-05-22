@@ -97,7 +97,7 @@ if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response
 					<?php if (!empty($error)) { foreach ($error as $err) { ?>
 					<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?=$err;?></div>
 					<?php } } elseif (isset($success)) { ?>
-					<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Сообщение отправленно, <a href="tg://resolve?domain=<? $channel; ?>&post=<? $TelegramResponse['result']['message_id']; ?>">перейти в канал.</a></div>
+					<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Сообщение отправленно, <a href="tg://resolve?domain=<?=$channel; ?>&post=<?=$TelegramResponse['result']['message_id']; ?>">перейти в канал.</a></div>
 					<?php } ?>
 					<div class="form-group">
 						<label>Введите ваше имя</label>
