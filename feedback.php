@@ -1,24 +1,15 @@
 <?php
-
-/*
-https://api.telegram.org/botXXXXXXXXXXXXXXXXXXXXXXX/getUpdates,
-XXXXXXXXXXXXXXXXXXXXXXX - токен телеграм бота (там получаем chat_id, сначала добавьте бота в свой канал)
-https://www.google.com/recaptcha/admin - токен recaptcha
-*/
+$config = (require 'config.php');
 
 if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
 
-    // recaptcha secret token
-    $secret = "";
-    $recaptchaApi = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secret}&response={$_POST['g-recaptcha-response']}");
+    $recaptcha = $config['recaptcha'];
+    $recaptchaApi = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha}&response={$_POST['g-recaptcha-response']}");
     $recaptchaResponse = json_decode($recaptchaApi);
 
-    // tg bot token
-    $token = "";
-    // tg chat id
-    $chat_id = "";
-    // tg channel name
-    $channel = "";
+    $token = $config['token'];
+    $chat_id = $config['chat_id'];
+    $channel = $config['channel'];
 
     $error = array();
 
@@ -93,25 +84,27 @@ if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response
         <div class="row">
         	<div class="col-sm-12">
 				<form method="POST">
-					<legend>Crashmax Feedback</legend>
+					<legend>Telegram Feedback Form</legend>
 					<?php if (!empty($error)) { foreach ($error as $err) { ?>
-					<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?=$err;?></div>
+					<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?=$err?></div>
 					<?php } } elseif (isset($success)) { ?>
-					<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Сообщение отправленно, <a href="tg://resolve?domain=<?=$channel; ?>&post=<?=$TelegramResponse['result']['message_id']; ?>">перейти в канал.</a></div>
+					<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Сообщение отправленно, <a href="tg://resolve?domain=<?=$channel?>&post=<?=$TelegramResponse['result']['message_id']?>">перейти в канал.</a></div>
 					<?php } ?>
 					<div class="form-group">
-						<label>Введите ваше имя</label>
-						<input type="text" class="form-control" name="name" maxlength="80" placeholder="Например, Иван" required>
+						<label>Имя:</label>
+						<input type="text" class="form-control" name="name" maxlength="80" placeholder="Иван" required>
 					</div>
 					<div class="form-group">
-						<label>Введите E-mail</label>
+						<label>E-mail:</label>
 						<input type="email" class="form-control" name="email" maxlength="80" placeholder="email@gmail.com" required>
 					</div>
 					<div class="form-group">
-						<label>Введите сообщение</label>
+						<label>Текст сообщения:</label>
 						<textarea type="text" class="form-control" name="text" maxlength="300" placeholder="Сообщение" required></textarea>
 					</div>
-					<div class="g-recaptcha" data-sitekey=""></div><!-- widget token -->
+                    <!-- widget recaptcha -->
+					<div class="g-recaptcha" data-sitekey="<?=$config['data-sitekey']?>"></div>
+                    <!-- /widget recaptcha -->
 					<div class="grid">
 						<button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-envelope"></i> Отправить</button>
 					</div>
