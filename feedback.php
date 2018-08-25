@@ -15,7 +15,7 @@ if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response
 
     $name = substr($_POST['name'], 0, 80);
     $email = substr($_POST['email'], 0, 80);
-	$text = substr($_POST['text'], 0, 300);
+    $text = substr($_POST['text'], 0, 300);
 
     if (empty($name)) $error[] = 'Вы не ввели имя.';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $error[] = 'Вы не ввели E-mail.';
@@ -31,7 +31,7 @@ if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response
 
         foreach ($arr as $key => $value) {
             $txt .= "<b>".$key."</b> ".$value."%0A";
-		};
+        };
 
         $TelegramApi = file_get_contents("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}");
         $TelegramResponse = json_decode($TelegramApi, true);
@@ -64,7 +64,7 @@ if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response
          	border-radius: 15px;
         }
         textarea {
-			resize: vertical;
+            resize: vertical;
          	min-height: 34px;
         }
         .glyphicon {
@@ -82,37 +82,37 @@ if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response
 <body>
     <div class="container">
         <div class="row">
-        	<div class="col-sm-12">
-				<form method="POST">
-					<legend>Telegram Feedback Form</legend>
-					<?php if (!empty($error)) { foreach ($error as $err) { ?>
-					<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?=$err?></div>
-					<?php } } elseif (isset($success)) { ?>
-					<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Сообщение отправленно, <a href="tg://resolve?domain=<?=$channel?>&post=<?=$TelegramResponse['result']['message_id']?>">перейти в канал.</a></div>
-					<?php } ?>
-					<div class="form-group">
-						<label>Имя:</label>
-						<input type="text" class="form-control" name="name" maxlength="80" placeholder="Иван" required>
-					</div>
-					<div class="form-group">
-						<label>E-mail:</label>
-						<input type="email" class="form-control" name="email" maxlength="80" placeholder="email@gmail.com" required>
-					</div>
-					<div class="form-group">
-						<label>Текст сообщения:</label>
-						<textarea type="text" class="form-control" name="text" maxlength="300" placeholder="Сообщение" required></textarea>
-					</div>
+            <div class="col-sm-12">
+                <form method="POST">
+                    <legend>Telegram Feedback Form</legend>
+                    <?php if (!empty($error)) { foreach ($error as $err) { ?>
+                    <div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><?=$err?></div>
+                    <?php } } elseif (isset($success)) { ?>
+                    <div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Сообщение отправленно, <a href="tg://resolve?domain=<?=$channel?>&post=<?=$TelegramResponse['result']['message_id']?>">перейти в канал.</a></div>
+                    <?php } ?>
+                    <div class="form-group">
+                        <label>Имя:</label>
+                        <input type="text" class="form-control" name="name" maxlength="80" placeholder="Иван" required>
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail:</label>
+                        <input type="email" class="form-control" name="email" maxlength="80" placeholder="email@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Текст сообщения:</label>
+                        <textarea type="text" class="form-control" name="text" maxlength="300" placeholder="Сообщение" required></textarea>
+                    </div>
                     <!-- widget recaptcha -->
-					<div class="g-recaptcha" data-sitekey="<?=$config['data-sitekey']?>"></div>
+                    <div class="g-recaptcha" data-sitekey="<?=$config['data-sitekey']?>"></div>
                     <!-- /widget recaptcha -->
-					<div class="grid">
-						<button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-envelope"></i> Отправить</button>
-					</div>
-				</form>
-        	</div>
-    	</div>
-	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+                    <div class="grid">
+                        <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-envelope"></i> Отправить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
 </html>

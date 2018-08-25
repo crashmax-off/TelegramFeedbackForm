@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'recaptcha' => '',
-    'data-sitekey' => '',
+	'recaptcha' => '',
+	'data-sitekey' => '',
 	'token' => '',
 	'chat_id' => '',
 	'channel' => ''
