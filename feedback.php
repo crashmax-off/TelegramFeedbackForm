@@ -112,7 +112,12 @@ if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response
             </div>
         </div>
     </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <footer class="footer">
+        <div class="container text-center">
+            <p class="text-muted">Created by <a href="https://github.com/crashmax-off"><img width="16" height="16" src="https://assets-cdn.github.com/favicon.ico"> crashmax-off</a> with love ♥</p>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
 </html>
