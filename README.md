@@ -47,8 +47,8 @@
     ];
     ```
 
----
-**Live example:** [https://crashmax.ru/feedback](https://crashmax.ru/feedback)
+# Live example
+[https://crashmax.ru/feedback](https://crashmax.ru/feedback)
 
----
-**License:** [MIT](https://github.com/crashmax-off/TelegramFeedbackForm/blob/master/LICENSE)
+# License
+[MIT](https://github.com/crashmax-off/TelegramFeedbackForm/blob/master/LICENSE)
