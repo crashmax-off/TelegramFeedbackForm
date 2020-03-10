@@ -4,7 +4,7 @@
     - Choose a name for your bot.
     - Now let's choose a username for your bot. It must end in `bot`. Like this, for example: `TetrisBot` or `tetris_bot`.
     - Copy token bot to access the API
-2. **Adding a bot to our channel as an admin**
+2. **Add a bot to our channel as an admin**
     - We send a message to the channel and bot
         - Open in the browser `https://api.telegram.org/botXXXXXXXXXXXXXXXXXXXXXXX/getUpdates`, XXXXXXXXXXXXXXXXXXXXXXX - your token
     - Copy the chat id `-1001211015715`
@@ -47,7 +47,7 @@
     ];
     ```
 
-# Live example
+# Live
 [https://crashmax.ru/feedback](https://crashmax.ru/feedback)
 
 # License

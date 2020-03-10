@@ -1,6 +1,5 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "telegram-feedback",
     "icons": [
         {
             "src": "android-chrome-192x192.png",
