@@ -5,7 +5,7 @@ ini_set('display_errors', 0);
 
 if (isset($_POST['btn'])) {
 
-	$error = array();
+    $error = array();
 
     if(empty($_POST["g-recaptcha-response"])) {
         $error[] = 'Captha is empty!';
@@ -33,7 +33,7 @@ if (isset($_POST['btn'])) {
             $email = substr($_POST['email'], 0, 128);
             $text = substr($_POST['text'], 0, 300);
 
-            if (empty($subject)) $error[] = 'You have not entered a subject.';
+            if (empty($subject)) $error[] = ' You have not entered a subject.';
 
             if (empty($email)) {
                 $error[] = 'You have not entered E-mail.';
@@ -93,6 +93,10 @@ if (isset($_POST['btn'])) {
                 min-height: 34px;
             }
             
+            .right {
+                float: right;
+            }
+
             .github-corner:hover .octo-arm {
                 animation: octocat-wave 560ms ease-in-out
             }
@@ -140,7 +144,7 @@ if (isset($_POST['btn'])) {
         <?php if (!empty($error)) { foreach ($error as $err) { ?>
             <div class="alert alert-danger" role="alert"><?=$err?></div>
         <?php } } elseif (isset($success)) { ?>
-            <div class="alert alert-success" role="alert">Message sent successfully🎉 <a href="tg://resolve?domain=<?=$sendMessage['result']['chat']['username']?>&post=<?=$sendMessage['result']['message_id']?>">Click to views message</a></div>
+            <div class="alert alert-success" role="alert">🎉 Message sent successfully <a class="right" href="tg://resolve?domain=<?=$sendMessage['result']['chat']['username']?>&post=<?=$sendMessage['result']['message_id']?>">Click to view message ✉️</a></div>
         <?php } ?>
         <form method="POST">
             <div class="form-group">
