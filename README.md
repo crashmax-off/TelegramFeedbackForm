@@ -42,8 +42,7 @@
         'recaptcha' => '6LcBqloUAAAAAF-oAHbuq7lpcDA8mO3Jt1mH5fWf',
         'data-sitekey' => '6LcBqloUAAAAAHf_goFC2UP_7rqo2fORAIB6HnaI',
         'token' => '522659600:AAGiKR00o0sADPYc_G8wI9EqDIJhGnICzEU',
-        'chat_id' => '-1001211015715',
-        'channel' => 'telegram'
+        'chat_id' => '-1001211015715'
     ];
     ```
 

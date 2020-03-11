@@ -1,46 +1,70 @@
 <?php
 $config = require_once 'config.php';
 
-$response_captcha = $_POST['g-recaptcha-response'];
-if (!empty($response_captcha)) {
-    $recaptcha = $config['recaptcha'];
-    $recaptchaApi = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$recaptcha}&response={$response_captcha}");
-    $recaptchaResponse = json_decode($recaptchaApi);
+ini_set('display_errors', 0);
 
-    $token = $config['token'];
-    $chat_id = $config['chat_id'];
-    $channel = $config['channel'];
+if (isset($_POST['btn'])) {
 
-    $error = array();
+	$error = array();
 
-    $name = substr($_POST['name'], 0, 80);
-    $email = substr($_POST['email'], 0, 80);
-    $text = substr($_POST['text'], 0, 300);
+    if(empty($_POST["g-recaptcha-response"])) {
+        $error[] = 'Captha is empty!';
+    } else {
+        $captha_url = 'https://www.google.com/recaptcha/api/siteverify';
+        $data = [
+            'secret' => $config['recaptcha'],
+            'response' => $_POST["g-recaptcha-response"]
+        ];
+        $options = [
+            'http' => [
+                'header' => 'Content-Type: application/x-www-form-urlencoded',
+                'method' => 'POST',
+                'content' => http_build_query($data)
+            ]
+        ];
+        $context = stream_context_create($options);
+        $verify = file_get_contents($captha_url, false, $context);
+        $captcha_success = json_decode($verify);
 
-    if (empty($name)) $error[] = 'You have not entered a subject.';
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $error[] = 'You have not entered E-mail.';
-    if (empty($text)) $error[] = 'You have not entered text message.';
+        if ($captcha_success->success == true) {
+            $error[] = 'Captha was not correct!';
+        } else if ($captcha_success->success == false) {
+            $subject = substr($_POST['subject'], 0, 128);
+            $email = substr($_POST['email'], 0, 128);
+            $text = substr($_POST['text'], 0, 300);
 
-    if (empty($error) && $recaptchaResponse->success) {
-        $arr = array(
-            'Subject: ' => $name,
-            'E-mail: ' => $email,
-            'Text:' => $text
-        );
+            if (empty($subject)) $error[] = 'You have not entered a subject.';
 
-        foreach ($arr as $key => $value) {
-            $txt .= "<b>" . $key . "</b> " . $value . "%0A";
-        };
+            if (empty($email)) {
+                $error[] = 'You have not entered E-mail.';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error[] = 'Email is not correct!';
+            }
 
-        $TelegramApi = file_get_contents("https://api.telegram.org/bot{$token}/sendMessage?chat_id={$chat_id}&parse_mode=html&text={$txt}");
-        $TelegramResponse = json_decode($TelegramApi, true);
-        
-        if ($TelegramApi){
-            $success = true;
+            if (empty($text)) $error[] = 'You have not entered text message.';
+
+            if (empty($error)) {
+
+                $arr = array(
+                    'Subject: ' => $subject,
+                    'E-mail: ' => $email,
+                    'Text:' => $text
+                );
+                
+                foreach ($arr as $key => $value) {
+                    $txt .= "*" . $key . "* " . $value . "%0A";
+                };
+
+                $response = file_get_contents("https://api.telegram.org/bot{$config['token']}/sendMessage?chat_id={$config['chat_id']}&parse_mode=markdown&text={$txt}");
+                $sendMessage = json_decode($response, true);
+                if ($sendMessage['ok'] == true) {
+                    $success = true;
+                } else {
+                    $error[] = 'Request failed!';
+                }
+            }
         }
     }
-} elseif (isset($response_captcha)) {
-    $error[] = 'Captha was not correct!';
 }
 ?>
 <!DOCTYPE html>
@@ -116,12 +140,12 @@ if (!empty($response_captcha)) {
         <?php if (!empty($error)) { foreach ($error as $err) { ?>
             <div class="alert alert-danger" role="alert"><?=$err?></div>
         <?php } } elseif (isset($success)) { ?>
-            <div class="alert alert-success" role="alert">Message sent successfully🎉 <a href="tg://resolve?domain=<?=$channel?>&post=<?=$TelegramResponse['result']['message_id']?>">Click to views message</a></div>
+            <div class="alert alert-success" role="alert">Message sent successfully🎉 <a href="tg://resolve?domain=<?=$sendMessage['result']['chat']['username']?>&post=<?=$sendMessage['result']['message_id']?>">Click to views message</a></div>
         <?php } ?>
         <form method="POST">
             <div class="form-group">
                 <label>Subject:</label>
-                <input type="text" class="form-control" name="name" maxlength="128" placeholder="Ivan" required>
+                <input type="text" class="form-control" name="subject" maxlength="128" placeholder="Ivan" required>
             </div>
             <div class="form-group">
                 <label>E-mail:</label>
@@ -134,7 +158,7 @@ if (!empty($response_captcha)) {
             <!-- widget recaptcha -->
             <div class="g-recaptcha" data-sitekey="<?=$config['data-sitekey']?>"></div>
             <!-- /widget recaptcha -->
-            <button type="submit" class="btn btn-lg btn-block btn-success mt-3">Submit</button>
+            <button type="submit" class="btn btn-lg btn-block btn-success mt-3" name="btn" value="Submit">Submit</button>
         </form>
     </div>
     <div class="text-center mt-4 mb-4">Created by <a href="https://crashmax.ru" target="_blank">crashmax</a> with <span class="text-danger">♥</span></div>
