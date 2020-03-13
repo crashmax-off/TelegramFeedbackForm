@@ -81,16 +81,10 @@ if (isset($_POST['btn'])) {
         <meta name="theme-color" content="#0089cd">
         <title>Telegram Feedback</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha256-m/h/cUDAhf6/iBRixTbuc8+Rg2cIETQtPcH9D3p2Kg0=" crossorigin="anonymous">
-        <style>
-            form {
-                background-color: #f9f9f9;
-                padding: 20px;
-                border-radius: 15px;
-            }
-            
+        <style>            
             textarea {
                 resize: vertical;
-                min-height: 34px;
+                min-height: 8rem;
             }
             
             .right {
@@ -128,7 +122,7 @@ if (isset($_POST['btn'])) {
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
 <body>
-    <div class="jumbotron">
+    <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Telegram Feedback</h1>
         </div>
@@ -141,29 +135,32 @@ if (isset($_POST['btn'])) {
         </svg>
     </a>
     <div class="container container-main">
-        <?php if (!empty($error)) { foreach ($error as $err) { ?>
-            <div class="alert alert-danger" role="alert"><?=$err?></div>
-        <?php } } elseif (isset($success)) { ?>
-            <div class="alert alert-success" role="alert">🎉 Message sent successfully <a class="right" href="tg://resolve?domain=<?=$sendMessage['result']['chat']['username']?>&post=<?=$sendMessage['result']['message_id']?>">Click to view message ✉️</a></div>
-        <?php } ?>
-        <form method="POST">
-            <div class="form-group">
-                <label>Subject:</label>
-                <input type="text" class="form-control" name="subject" maxlength="128" placeholder="Ivan" required>
-            </div>
-            <div class="form-group">
-                <label>E-mail:</label>
-                <input type="email" class="form-control" name="email" maxlength="128" placeholder="email@gmail.com" required>
-            </div>
-            <div class="form-group">
-                <label>Text:</label>
-                <textarea type="text" class="form-control" name="text" maxlength="300" placeholder="Please enter a message" required></textarea>
-            </div>
-            <!-- widget recaptcha -->
-            <div class="g-recaptcha" data-sitekey="<?=$config['data-sitekey']?>"></div>
-            <!-- /widget recaptcha -->
-            <button type="submit" class="btn btn-lg btn-block btn-success mt-3" name="btn" value="Submit">Submit</button>
-        </form>
+    <?php if (!empty($error)) { foreach ($error as $err) { ?>
+        <div class="alert alert-danger" role="alert"><?=$err?></div>
+    <?php } } elseif (isset($success)) { ?>
+        <div class="alert alert-success" role="alert">🎉 Message sent successfully <a class="right" href="tg://resolve?domain=<?=$sendMessage['result']['chat']['username']?>&post=<?=$sendMessage['result']['message_id']?>">Click to view message ✉️</a></div>
+    <?php } ?>
+    <div class="card mt-3">
+        <div class="card-body">
+            <form method="POST">
+                <div class="form-group">
+                    <label>Subject:</label>
+                    <input type="text" class="form-control" name="subject" maxlength="128" placeholder="Ivan" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail:</label>
+                    <input type="email" class="form-control" name="email" maxlength="128" placeholder="email@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Text:</label>
+                    <textarea type="text" class="form-control" name="text" maxlength="300" placeholder="Please enter a message" required></textarea>
+                </div>
+                <!-- widget recaptcha -->
+                <div class="g-recaptcha" data-sitekey="<?=$config['data-sitekey']?>"></div>
+                <!-- /widget recaptcha -->
+                <button type="submit" class="btn btn-lg btn-block btn-success mt-3" name="btn" value="Submit">Submit</button>
+            </form>
+        </div>
     </div>
     <div class="text-center mt-4 mb-4">Created by <a href="https://crashmax.ru" target="_blank">crashmax</a> with <span class="text-danger">♥</span></div>
 </body>
